@@ -1,20 +1,20 @@
-#ifndef REPLACEMENT_SEGLRU_H
-#define REPLACEMENT_SEGLRU_H
+#ifndef REPLACEMENT_SEG_LRU_H
+#define REPLACEMENT_SEG_LRU_H
 
 #include <vector>
 
 #include "cache.h"
 #include "modules.h"
 
-class lru : public champsim::modules::replacement
+class seg_lru : public champsim::modules::replacement
 {
   long NUM_WAY;
   std::vector<uint64_t> last_used_cycles;
   uint64_t cycle = 0;
 
 public:
-  explicit seglru(CACHE* cache);
-  seglru(CACHE* cache, long sets, long ways);
+  explicit seg_lru(CACHE* cache);
+  seg_lru(CACHE* cache, long sets, long ways);
 
   // void initialize_replacement();
   long find_victim(uint32_t triggering_cpu, uint64_t instr_id, long set, const champsim::cache_block* current_set, champsim::address ip,
