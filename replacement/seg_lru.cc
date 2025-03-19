@@ -2,59 +2,49 @@
 
 #include <algorithm>
 #include <cassert>
-#include <vector>
 
-class seg_lru : public replacement
+seg_lru::seg_lru(CACHE* cache) 
+    : seg_lru(cache, cache->NUM_SET, cache->NUM_WAY) {}
+
+seg_lru::seg_lru(CACHE* cache, long sets, long ways) 
+    : replacement(cache), 
+      NUM_WAY(ways), 
+      last_used_cycles(static_cast<std::size_t>(sets * ways), 0) {}
+
+long seg_lru::find_victim(uint32_t triggering_cpu, uint64_t instr_id, long set, 
+                      const champsim::cache_block* current_set, 
+                      champsim::address ip, champsim::address full_addr, 
+                      access_type type)
 {
-private:
-    long NUM_WAY;
-    std::vector<uint64_t> last_used_cycles;  // Track last used cycle for LRU
-    std::vector<bool> outcome_bits;          // Track whether a line has been re-referenced
+    auto begin = std::next(std::begin(last_used_cycles), set * NUM_WAY);
+    auto end = std::next(begin, NUM_WAY);
 
-public:
-    seg_lru(CACHE* cache) : seg_lru(cache, cache->NUM_SET, cache->NUM_WAY) {}
+    // Find the victim by selecting the least recently used (inactive first)
+    auto victim = std::min_element(begin, end);
+    return std::distance(begin, victim);
+}
 
-    seg_lru(CACHE* cache, long sets, long ways) 
-        : replacement(cache), NUM_WAY(ways),
-          last_used_cycles(static_cast<std::size_t>(sets * ways), 0),
-          outcome_bits(static_cast<std::size_t>(sets * ways), false) {}
+void seg_lru::replacement_cache_fill(uint32_t triggering_cpu, long set, long way, 
+                                 champsim::address full_addr, champsim::address ip, 
+                                 champsim::address victim_addr, access_type type)
+{
+    // Insert as an inactive page (low cycle value)
+    last_used_cycles.at((std::size_t)(set * NUM_WAY + way)) = cycle++; 
+}
 
-    long find_victim(uint32_t triggering_cpu, uint64_t instr_id, long set, const champsim::cache_block* current_set, champsim::address ip,
-                      champsim::address full_addr, access_type type) override
-    {
-        auto begin = std::next(std::begin(last_used_cycles), set * NUM_WAY);
-        auto end = std::next(begin, NUM_WAY);
+void seg_lru::update_replacement_state(uint32_t triggering_cpu, long set, long way, 
+                                   champsim::address full_addr, champsim::address ip, 
+                                   champsim::address victim_addr, access_type type, 
+                                   uint8_t hit)
+{
+    auto idx = (std::size_t)(set * NUM_WAY + way);
 
-        // First, check for a cache line with outcome bit == false
-        for (long way = 0; way < NUM_WAY; ++way)
-        {
-            if (!outcome_bits[set * NUM_WAY + way])
-                return way;  // Select this as the victim
-        }
-
-        // If no such line exists, fall back to traditional LRU selection
-        auto victim = std::min_element(begin, end);
-        return std::distance(begin, victim);
-    }
-
-    void replacement_cache_fill(uint32_t triggering_cpu, long set, long way, champsim::address full_addr, champsim::address ip, champsim::address victim_addr,
-                                 access_type type) override
-    {
-        // On insertion, reset the outcome bit and update last used cycle
-        long index = set * NUM_WAY + way;
-        outcome_bits[index] = false;  // New line, so outcome is false
-        last_used_cycles[index] = cycle++;
-    }
-
-    void update_replacement_state(uint32_t triggering_cpu, long set, long way, champsim::address full_addr, champsim::address ip,
-                                   champsim::address victim_addr, access_type type, uint8_t hit) override
-    {
-        long index = set * NUM_WAY + way;
-        
-        if (hit && access_type{type} != access_type::WRITE) // Skip for writeback hits
-        {
-            outcome_bits[index] = true;  // Mark it as re-referenced
-            last_used_cycles[index] = cycle++;
+    if (hit && access_type{type} != access_type::WRITE) { // Skip for writeback hits
+        // If the entry was inactive (low cycle value), promote it by boosting its cycle count
+        if (last_used_cycles.at(idx) < cycle - NUM_WAY) {
+            last_used_cycles.at(idx) = cycle + NUM_WAY; // Boost cycle count for active promotion
+        } else {
+            last_used_cycles.at(idx) = cycle++; // Regular update for active pages
         }
     }
-};
+}
