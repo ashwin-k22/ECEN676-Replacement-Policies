@@ -43,7 +43,7 @@ For each benchmark, we collect performance statistics such as:
 - **Cache hit and miss rates**
 - **Total CPU cycles consumed**
 
-Results are saved in the `output/` folder. 
+Results are saved in the `outputs/` folder. 
 
 ## Repository Structure
 
@@ -60,7 +60,7 @@ Results are saved in the `output/` folder.
 │   ├── lru/
 │   ├── seg_lru/
 │   └── drrip/
-├── outputs/                     # Simulation results (e.g., CSV logs)
+├── outputs/                     # Simulation results
 │   ├── 648.txt
 │   ├── 604.txt
 │   ├── ...
