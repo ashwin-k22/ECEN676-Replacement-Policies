@@ -28,7 +28,9 @@ To evaluate the effectiveness of each policy, we selected a diverse set of memor
 - `602.gcc_s-734B.champsimtrace.xz`: Based off the GCC 4.5.0 compiler 
 - `603.bwaves_s-3699B.champsimtrace.xz` : A numerical solver that simulates cubic cell high pressure blast waves
 - `605.mcf_s-665B.champsimtrace.xz` : Based on the MCF program that is used for scheduling public mass transportation
+- `619.lbm_s-665B.champsimtrace.xz` : A 3D simulation of incompressible fluids
 - `625.x264_s-18B.champsimtrace.xz` : A software library that encodes video streams to H.264/MPEG-4 AVC format
+- `625.pop2_s-18B.champsimtrace.xz` : The parallel Ocean Program climate model that simulates the earth’s climate states
 - `641.leela_s-800B.champsimtrace.xz` : A simulation of the Go playing engine implementing AI and position estimators
 - `644.nab_s.champsimtrace.xz` : Based on the Nucleic Acid Builder to perform molecular modeling
 - `648.exchange2_s-1699B.champsimtrace.xz` : Fotonik3D is used to compute photonic waveguide transmission coefficients
