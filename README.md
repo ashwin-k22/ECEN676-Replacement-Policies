@@ -66,3 +66,5 @@ Results are saved in the `outputs/` folder.
 │   ├── 648.txt
 │   ├── 604.txt
 │   ├── ...
+├── Analysis.pdf/             #Document of analysis of the policies 
+├── Project_Proposal.pdf/     #Project Proposal document
