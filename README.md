@@ -46,7 +46,7 @@ For each benchmark, we collect performance statistics such as:
 - **Total CPU cycles consumed**
 
 Results are saved in the `outputs/` folder. 
-Analysis are saved in the `Analysis.pdf/.  
+Analysis are saved in the `Analysis.pdf`.  
 
 ## Repository Structure
 
