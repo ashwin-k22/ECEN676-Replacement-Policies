@@ -48,24 +48,4 @@ For each benchmark, we collect performance statistics such as:
 Results are saved in the `outputs/` folder. 
 Analysis are saved in the `Analysis.pdf`.  
 
-## Repository Structure
-
-
-
-├── README.md                   # Project overview
-├── configs/                    # ChampSim config files for each policy
-│   ├── ship_config.json
-│   ├── lru_config.json
-│   ├── seglru_config.json
-│   └── drrip_config.json
-├── replacement/                # Source code for replacement policies
-│   ├── ship/
-│   ├── lru/
-│   ├── seg_lru/
-│   └── drrip/
-├── outputs/                     # Simulation results
-│   ├── 648.txt
-│   ├── 604.txt
-│   ├── ...
-├── Analysis.pdf/             #Document of analysis of the policies 
-├── Project_Proposal.pdf/     #Project Proposal document
+Link to the project presentation: https://drive.google.com/file/d/13QHVTJSScyHyREM_gm2y3EeAkBKpsID9/view?usp=drive_link. 
