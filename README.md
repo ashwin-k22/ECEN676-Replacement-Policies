@@ -47,6 +47,6 @@ For each benchmark, we collect performance statistics such as:
   
 
 ## Final Results
-\n Results are saved in the `outputs/` folder. 
-Analysis are saved in the `Analysis.pdf`.
-[Project Video](https://drive.google.com/file/d/13QHVTJSScyHyREM_gm2y3EeAkBKpsID9/view?usp=drive_link) 
+<br>Results are saved in the `outputs/` folder. 
+<br>Analysis are saved in the `Analysis.pdf`.
+<br>[Link to Project Video](https://drive.google.com/file/d/13QHVTJSScyHyREM_gm2y3EeAkBKpsID9/view?usp=drive_link)
